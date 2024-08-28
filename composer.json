@@ -1,9 +1,9 @@
 {
-  "name": "data-dog/pager-bundle",
+  "name": "deileo/pager-bundle",
   "type": "symfony-bundle",
   "description": "Paginator bundle for symfony2 and doctrine orm, allows customization with filters and sorters",
   "keywords": ["pager", "paginator", "pagination", "symfony2", "bundle", "doctrine", "orm"],
-  "homepage": "http://github.com/DATA-DOG/DataDogPagerBundle",
+  "homepage": "https://github.com/deileo/DataDogPagerBundle",
   "license": "MIT",
 
   "authors": [
