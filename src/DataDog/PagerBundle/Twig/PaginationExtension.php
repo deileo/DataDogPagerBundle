@@ -20,7 +20,7 @@ class PaginationExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         $defaults = [
             'is_safe' => ['html'],
@@ -41,7 +41,7 @@ class PaginationExtension extends AbstractExtension
         ];
     }
 
-    protected function mergeRecursive(array $a, array $b)
+    protected function mergeRecursive(array $a, array $b): array
     {
         foreach ($b as $k => $v) {
             if (!array_key_exists($k, $a)) {
