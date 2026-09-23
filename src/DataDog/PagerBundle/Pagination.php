@@ -229,7 +229,7 @@ class Pagination extends \ArrayIterator
         return $this->pagination;
     }
 
-    protected function applySorters(QueryBuilder $qb, array $sorters, callable $handler = null)
+    protected function applySorters(QueryBuilder $qb, array $sorters, ?callable $handler = null)
     {
         foreach ($sorters as $key => $direction) {
             // custom handling
@@ -244,7 +244,7 @@ class Pagination extends \ArrayIterator
         }
     }
 
-    protected function applyFilters(QueryBuilder $qb, array $filters, callable $handler = null)
+    protected function applyFilters(QueryBuilder $qb, array $filters, ?callable $handler = null)
     {
         foreach ($filters as $key => $val) {
             if ($val === self::$filterAny) {
