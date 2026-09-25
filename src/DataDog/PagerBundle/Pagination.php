@@ -167,7 +167,7 @@ class Pagination extends \ArrayIterator
         if (is_null($applyCounter)) {
             $counter = clone $paginator;
             $counter->resetDQLPart('orderBy');
-            $counter->select($qb->expr()->countDistinct($qb->getRootAlias()));
+            $counter->select($qb->expr()->countDistinct($qb->getRootAliases()[0]));
         } else {
             $counter = call_user_func_array($applyCounter, [clone $paginator]);
         }
@@ -240,8 +240,31 @@ class Pagination extends \ArrayIterator
                     continue; // custom sorter handler has handled the parameter
                 }
             }
-            $qb->addOrderBy($key, in_array(strtoupper($direction), ['ASC', 'DESC']) ? $direction : 'ASC');
+            $direction = strtoupper($direction) === 'DESC' ? 'DESC' : 'ASC';
+            $qb->addOrderBy($key, $this->sortDirection($direction));
         }
+    }
+
+    /**
+     * Converts 'ASC' or 'DESC' to the \SortDirection enum when the
+     * installed ORM (3.7+) accepts it, string directions are deprecated there.
+     *
+     * @param string $direction
+     * @return \SortDirection|string
+     */
+    protected function sortDirection($direction)
+    {
+        static $supportsEnum;
+        if (null === $supportsEnum) {
+            $type = (new \ReflectionMethod(QueryBuilder::class, 'addOrderBy'))->getParameters()[1]->getType();
+            $supportsEnum = null !== $type && false !== strpos((string) $type, 'SortDirection');
+        }
+
+        if (!$supportsEnum) {
+            return $direction;
+        }
+
+        return $direction === 'DESC' ? \SortDirection::Descending : \SortDirection::Ascending;
     }
 
     protected function applyFilters(QueryBuilder $qb, array $filters, ?callable $handler = null)
